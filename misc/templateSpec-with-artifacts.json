@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+        {
+            "type": "Microsoft.Resources/templateSpecs",
+            "apiVersion": "2020-06-01",
+            "name": "networking",
+            "location": "eastus",
+            "properties": {
+                "description": "Base networking stack"
+            }
+        },
+        {
+            "type": "Microsoft.Resoruces/templateSpecs/versions",
+            "apiVersion": "2020-06-01",
+            "name": "networking/1.0.0",
+            "location": "eastus",
+            "properties": {
+                "template": {
+                    // template code goes here
+                },
+                "artifacts": [ // optional set of artifacts
+                    {
+                        "kind": "template",
+                        "path": "artifacts\\childTemp1.json",
+                        "template": {
+                            // child template code goes here
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

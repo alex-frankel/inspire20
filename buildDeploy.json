@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "eastus"
+        },
+        "sqlServerUsername": {
+            "type": "string"
+        },
+        "sqlServerPassword": {
+            "type": "securestring"
+        }
+    },
+    "variables": {
+        "serverName": "shiplog"
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-06-01-preview",
+            "type": "Microsoft.sql/servers",
+            "name": "[variables('serverName')]",
+            "location": "[parameters('location')]",
+            "kind": "v12.0",
+            "tags": {
+                "costCenter": "12345"
+            },
+            "properties": {
+                "administratorLogin": "[parameters('sqlServerUsername')]", // "adminUser",
+                "administratorLoginPassword": "[parameters('sqlServerPassword')]", // "P@ssw0rd12345",
+                "version": "12.0"
+            }
+        },
+        {
+            "apiVersion": "2019-06-01-preview",
+            "type": "Microsoft.sql/servers/databases",
+            "name": "[concat(variables('serverName'), '/', 'db')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Basic"
+            },
+            "kind": "v12.0,user",
+            "tags": {
+                "costCenter": "12345"
+            },
+            "properties": {
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.sql/servers', variables('serverName'))]"
+            ]
+        }
+    ]
+}
